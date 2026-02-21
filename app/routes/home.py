@@ -5,7 +5,6 @@ from fastapi.responses import RedirectResponse
 from schemas.user import SUserAuth, SUserRegister, SUser, SUserID, SUserInfo
 from services.crud.usercrud import UsersCRUD
 from services.auth.auth import AuthService
-from services.crud.packetscrud import PacketsCRUD
 
 
 router = APIRouter(tags=['Личный кабинет'])
@@ -17,8 +16,17 @@ settings = get_settings()
 
 @router.get("/", summary='Страница приглашения в сервис!')
 def home_page(request: Request):
-    return templates.TemplateResponse(name='index.html',
-                                              context={'request': request})
+    token = request.cookies.get(settings.COOKIE_NAME)
+    if token:
+        try:
+            user = AuthService.get_user_from_token(token)
+            return templates.TemplateResponse(name='index.html',
+                                            context={'request': request})
+        except HTTPException:
+            user = None
+    
+    return RedirectResponse("/login")
+
 
 @router.get("/registration", summary='Регистрация личного кабинета!')
 def registration(request: Request):

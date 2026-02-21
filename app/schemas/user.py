@@ -16,7 +16,6 @@ class SUser(BaseModel):
     last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
     email: EmailStr
     password: str = Field(..., min_length=3, max_length=150, description="Пароль, от 3 до 150 знаков")
-    is_admin: bool = Field(...)
 
 
 class SUserInfo(BaseModel):
@@ -24,7 +23,6 @@ class SUserInfo(BaseModel):
     first_name: str = Field(..., min_length=3, max_length=50, description="Имя, от 3 до 50 символов")
     last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
     email: EmailStr
-    is_admin: bool = Field(...)
 
 
 class SUserID(BaseModel):

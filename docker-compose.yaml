@@ -12,6 +12,16 @@ services:
       - 8000:8000
     networks:
       - ml_service_network
+  database:
+    image: postgres:16
+    env_file:
+      - ./app/.env
+    ports:
+      - 5555:5432
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    networks:
+      - ml_service_network
   web-proxy:
     image: nginx:latest
     container_name: diplo-service-nginx
@@ -22,6 +32,8 @@ services:
       - 80:80
     networks:
       - ml_service_network
+volumes:
+    postgres_volume:
 networks:
   ml_service_network:
     name: ml_service_network

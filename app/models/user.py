@@ -12,7 +12,7 @@ class User(Base):
     password: Mapped[str]
     is_access: Mapped[bool_val]
     is_admin: Mapped[bool_val]
-    packets: Mapped[list["Packet"]] = relationship(back_populates="user") 
+    ##packets: Mapped[list["Packet"]] = relationship(back_populates="user") 
 
     extend_existing = True
 
