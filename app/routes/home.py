@@ -20,8 +20,16 @@ def home_page(request: Request):
     if token:
         try:
             user = AuthService.get_user_from_token(token)
+            panel = {'Предсказания скорости': ['Forecast', 'fa-circle-nodes'],
+                     'Измерения': ['Measure', 'fa-chart-line'],
+                     'Админ панель': ['Admin', 'fa-tasks'],
+                     'Документация к проекту': ['Doc', 'fa-file-alt'],
+                     'Выход': ['Out', 'fa-sign-out-alt']
+                    }
             return templates.TemplateResponse(name='index.html',
-                                            context={'request': request})
+                                            context={'request': request,
+                                                     'panel': panel}
+                                            )
         except HTTPException:
             user = None
     
