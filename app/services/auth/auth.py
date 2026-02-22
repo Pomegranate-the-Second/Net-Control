@@ -75,7 +75,10 @@ class AuthService:
     @classmethod
     def get_current_user(cls, token: str = Depends(get_token)):
         return cls.get_user_from_token(token)
-
+    
+    @classmethod
+    def get_current_device(cls):
+        return 121
 
     @classmethod
     def get_current_admin_user(cls, token: str = Depends(get_token)):
