@@ -1,6 +1,29 @@
 {% include "base.html" %}
 {% include "panel.html" %}
 <main class="flex items-center justify-center min-h-[calc(100vh-80px)]">
+    <div class="custom-border bg-white p-8 custom-shadow w-full max-w-md">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Дипломный проект</h2>
+            <p class="text-gray-600 mt-2">Студента группы КТбо4-1 Манькус Даниила</p>
+        </div>
+        <div class="spacer">&nbsp;</div>
+        <div class="text-center mb-6">
+            <p>Ссылки на скачивание:</p>
+            <div class="store-links">
+                <!-- iOS -->
+
+                <!-- Android -->
+                <a href="https://play.google.com/store/apps/details?id=your.package.name" target="_blank" rel="noopener">
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg"
+                        alt="Android app">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div style="margin:10px 30px 10px 30px;">
+        &nbsp;
+    </div>
     <!-- Блок авторизации -->
     <div class="custom-border bg-white p-8 custom-shadow w-full max-w-md">
         <div class="text-center mb-6">
@@ -30,6 +53,7 @@
                             placeholder="Введите пароль">
                 </div>
             </div>
+            <!--
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
@@ -39,18 +63,21 @@
                     <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Забыли пароль?</a>
                 </div>
             </div>
+            -->
             <button type="submit" id="submit-form"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
                 <i class="fas fa-sign-in-alt mr-2"></i>
                 Войти
             </button>
         </form>
+        <!--
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">
                 Нет аккаунта? 
                 <a href="registration" class="font-medium text-blue-600 hover:text-blue-500">Зарегистрироваться</a>
             </p>
         </div>
+        -->
     </div>
 </main>
 <script>
