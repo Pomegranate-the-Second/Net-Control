@@ -19,7 +19,10 @@ def addMeasurement(measurement: SMeasurement,device: SDevice = Depends(AuthServi
                          cell_num = measurement.cell_num,
                          operator = measurement.operator,
                          upload = measurement.upload,
-                         download = measurement.download)
+                         download = measurement.download,
+                         rsrp = measurement.rsrp,
+                         rssi = measurement.rssi
+                         )
     result = {"message": "success"}
     try:
         MeasurementsCRUD.add(item)
@@ -41,6 +44,8 @@ def viewMeasurement(data: SRectangle, user: SUserInfo = Depends(AuthService.get_
                "operator": itm.operator,
                "upload": itm.upload,
                "download": itm.download,
+               "rsrp": itm.rsrp,
+               "rssi": itm.rssi,
                "event_datetime": itm.event_datetime
                } for itm in items]
     

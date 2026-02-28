@@ -30,6 +30,13 @@
         let markersLayer;
         let activePointId = null;
         
+        function getOperator(mnc) {
+            if (mnc == 2)
+                return "ПАО «МегаФон»"
+
+            return "Не указан"
+        }
+
         // Функция для отображения данных точки в левой панели
         function showPointData(point) {
             const dataContainer = document.getElementById('point-data-container');
@@ -45,34 +52,46 @@
             if (existingElement) {
                 // Если элемент уже существует, обновляем его и делаем активным
                 existingElement.innerHTML = `
-                    <h3>${point.title || 'Точка связи'}</h3>
-                    <div class="data-item">
-                        <span class="data-label">ID объекта:</span>
-                        <span class="data-value">${point.objectId || 'Не указан'}</span>
-                    </div>
+                    <h3>Точка измерений №${point.id}</h3>
                     <div class="data-item">
                         <span class="data-label">Широта:</span>
                         <span class="data-value">${point.lat.toFixed(6)}</span>
                     </div>
                     <div class="data-item">
                         <span class="data-label">Долгота:</span>
-                        <span class="data-value">${point.lng.toFixed(6)}</span>
+                        <span class="data-value">${point.lon.toFixed(6)}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Регион:</span>
-                        <span class="data-value">${point.region || 'Не указан'}</span>
+                        <span class="data-label">Обслуживающая базовая станция:</span>
+                        <span class="data-value">${point.bs_num || 'Не указан'}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Технологии:</span>
-                        <span class="data-value">${point.technologies || 'Не указаны'}</span>
+                        <span class="data-label">Обслуживающий сектор:</span>
+                        <span class="data-value">${point.cell_num || 'Не указан'}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Статус:</span>
-                        <span class="data-value">${point.status || 'Активна'}</span>
+                        <span class="data-label">Оператор:</span>
+                        <span class="data-value">${getOperator(point.operator)}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Адрес:</span>
-                        <span class="data-value">${point.address || 'Не определен'}</span>
+                        <span class="data-label">Скорость скачивания:</span>
+                        <span class="data-value">${point.download || 'Не определен'} Мбит/сек</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Скорость загрузки:</span>
+                        <span class="data-value">${point.upload || 'Не определен'} Мбит/сек</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Мощность опорного сигнала:</span>
+                        <span class="data-value">${point.rsrp || 'Не определен'} дБм</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Мощность принимаемого сигнала:</span>
+                        <span class="data-value">${point.rssi || 'Не определен'} дБм</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Дата измерения:</span>
+                        <span class="data-value">${point.event_datetime || 'Не указана'}</span>
                     </div>
                 `;
                 existingElement.classList.add('active');
@@ -84,34 +103,46 @@
                 pointElement.dataset.pointId = point.id;
                 
                 pointElement.innerHTML = `
-                    <h3>${point.title || 'Точка связи'}</h3>
-                    <div class="data-item">
-                        <span class="data-label">ID объекта:</span>
-                        <span class="data-value">${point.objectId || 'Не указан'}</span>
-                    </div>
+                    <h3>Точка измерений №${point.id}</h3>
                     <div class="data-item">
                         <span class="data-label">Широта:</span>
                         <span class="data-value">${point.lat.toFixed(6)}</span>
                     </div>
                     <div class="data-item">
                         <span class="data-label">Долгота:</span>
-                        <span class="data-value">${point.lng.toFixed(6)}</span>
+                        <span class="data-value">${point.lon.toFixed(6)}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Регион:</span>
-                        <span class="data-value">${point.region || 'Не указан'}</span>
+                        <span class="data-label">Обслуживающая базовая станция:</span>
+                        <span class="data-value">${point.bs_num || 'Не указан'}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Технологии:</span>
-                        <span class="data-value">${point.technologies || 'Не указаны'}</span>
+                        <span class="data-label">Обслуживающий сектор:</span>
+                        <span class="data-value">${point.cell_num || 'Не указан'}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Статус:</span>
-                        <span class="data-value">${point.status || 'Активна'}</span>
+                        <span class="data-label">Оператор:</span>
+                        <span class="data-value">${getOperator(point.operator)}</span>
                     </div>
                     <div class="data-item">
-                        <span class="data-label">Адрес:</span>
-                        <span class="data-value">${point.address || 'Не определен'}</span>
+                        <span class="data-label">Скорость скачивания:</span>
+                        <span class="data-value">${point.download || 'Не определен'} Мбит/сек</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Скорость загрузки:</span>
+                        <span class="data-value">${point.upload || 'Не определен'} Мбит/сек</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Мощность опорного сигнала:</span>
+                        <span class="data-value">${point.rsrp || 'Не определен'} дБм</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Мощность принимаемого сигнала:</span>
+                        <span class="data-value">${point.rssi || 'Не определен'} дБм</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Дата измерения:</span>
+                        <span class="data-value">${point.event_datetime || 'Не указана'}</span>
                     </div>
                 `;
                 
@@ -447,9 +478,12 @@
         async function addPointToMap(point) {
             // Определяем цвет маркера в зависимости от статуса
             let markerColor = '#3b82f6'; // Синий по умолчанию
-            if (point.status === 'Активна') markerColor = '#10b981'; // Зеленый
-            if (point.status === 'В разработке') markerColor = '#f59e0b'; // Желтый
-            if (point.status === 'Новая') markerColor = '#8b5cf6'; // Фиолетовый
+            //if (point.status === 'Активна') markerColor = '#10b981'; // Зеленый
+            //if (point.status === 'В разработке') markerColor = '#f59e0b'; // Желтый
+            //if (point.status === 'Новая') markerColor = '#8b5cf6'; // Фиолетовый
+            if (point.download < 31) markerColor = '#f59e0b';
+            if (point.download < 6) markerColor = '#b91010';
+            if (point.download >30) markerColor = '#10b981';
             
             // Создаем маркер с иконкой сотового телефона
             const marker = L.marker([point.lat, point.lon], {
@@ -469,26 +503,18 @@
             // Добавляем всплывающее окно с улучшенным дизайном
             marker.bindPopup(`
                 <div class="popup-content">
-                    <div class="popup-title">${point.title}</div>
-                    <div class="popup-detail">
-                        <span class="popup-label">ID:</span>
-                        <span class="popup-value">${point.bs_num}</span>
-                    </div>
+                    <div class="popup-title">№${point.id}</div>
                     <div class="popup-detail">
                         <span class="popup-label">Координаты:</span>
                         <span class="popup-value">${point.lat.toFixed(6)}, ${point.lon.toFixed(6)}</span>
                     </div>
                     <div class="popup-detail">
-                        <span class="popup-label">Технологии:</span>
-                        <span class="popup-value">${point.technologies}</span>
+                        <span class="popup-label">Оператор:</span>
+                        <span class="popup-value">${getOperator(point.operator)}</span>
                     </div>
                     <div class="popup-detail">
-                        <span class="popup-label">Статус:</span>
-                        <span class="popup-value">${point.status}</span>
-                    </div>
-                    <div class="popup-detail">
-                        <span class="popup-label">Адрес:</span>
-                        <span class="popup-value">${point.address}</span>
+                        <span class="popup-label">Скорость:</span>
+                        <span class="popup-value">${point.download}/${point.upload}&nbsp;Мбит/сек</span>
                     </div>
                 </div>
             `);
