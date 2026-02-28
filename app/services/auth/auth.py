@@ -41,7 +41,7 @@ class AuthService:
 
     @classmethod
     def authenticate_user(cls, auth_data: SUserAuth):
-        user = UsersCRUD.find_one_or_none_by_email(SUserEmail(email=auth_data.email))
+        user = UsersCRUD.find_one_or_none_by_email(SUserEmail(email=auth_data.email.lower()))
         if not user or cls.verify_password(plain_password=auth_data.password, hashed_password=user.password) is False:
             return None
         return user

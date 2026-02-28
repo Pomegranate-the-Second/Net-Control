@@ -54,6 +54,7 @@ class UsersCRUD:
     def add(cls, values: BaseModel):
         values_dict = values.model_dump(exclude_unset=True)
         new_instance = cls.model(**values_dict)
+        new_instance.email = new_instance.email.lower()
         with session_maker() as session:
             session.add(new_instance)
             try:
