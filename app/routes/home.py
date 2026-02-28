@@ -44,7 +44,7 @@ def registration(request: Request):
 
 @router.get("/login", summary='Вход в личный кабинет!')
 def login(request: Request):
-    panel = {}
+    panel = {'Документация к проекту': ['Doc', 'fa-file-alt']}
     return templates.TemplateResponse(name='auth.html', context={'request': request, 'panel': panel})
 
 
@@ -52,6 +52,11 @@ def login(request: Request):
 def logout(response: Response, request: Request):
     response.delete_cookie(key=settings.COOKIE_NAME)
     return templates.TemplateResponse(name='auth.html', context={'request': request})
+
+@router.get("/info", summary='Пояснительная записка к дипломной работе')
+def diplom(response: Response, request: Request):
+    panel = {'Вход': ['In', 'fa-sign-in-alt']}
+    return templates.TemplateResponse(name='info.html', context={'request': request, 'panel': panel})
 
 
 @router.get(
