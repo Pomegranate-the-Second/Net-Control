@@ -55,8 +55,24 @@ def logout(response: Response, request: Request):
 
 @router.get("/info", summary='Пояснительная записка к дипломной работе')
 def diplom(response: Response, request: Request):
+    token = request.cookies.get(settings.COOKIE_NAME)
+    if token:
+        try:
+            panel = {'Предсказания скорости': ['Forecast', 'fa-circle-nodes'],
+                     'Измерения': ['Measure', 'fa-chart-line'],
+                     'Админ панель': ['Admin', 'fa-tasks'],
+                     'Выход': ['Out', 'fa-sign-out-alt']
+                    }
+            return templates.TemplateResponse(name='info.html',
+                                            context={'request': request,
+                                                     'panel': panel}
+                                            )
+        except HTTPException:
+            None
+    
     panel = {'Вход': ['In', 'fa-sign-in-alt']}
     return templates.TemplateResponse(name='info.html', context={'request': request, 'panel': panel})
+    
 
 
 @router.get(

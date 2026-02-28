@@ -16,7 +16,7 @@
         
         <nav class="flex space-x-4">
             {% for key, value in panel.items() %}
-                <button class="nav-btn p-2 rounded-full hover:bg-blue-50 transition-colors" title="{{key}}">
+                <button class="nav-btn p-2 rounded-full hover:bg-blue-50 transition-colors" title="{{key}}" id="id{{value[0]}}">
                     <i class="fas {{value[1]}} text-blue-600 text-xl" switch='{{value[0]}}'></i>
                 </button>
             {% endfor %}
@@ -24,6 +24,11 @@
     </div>
 </header>
 <script>
+    console.log(window.location.href)
+    const forecast = document.getElementById("idForecast")
+    const measure = document.getElementById("idMeasure")
+    measure.classList.add("selected-btn")
+    console.log(measure.class)
     const formDataToJson = (formData) => JSON.stringify(Object.fromEntries(formData));
     // Анимация кнопок навигации
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -44,13 +49,17 @@
                 case 'Doc':
                     window.location.href = '/info'
                     break
-                //case "Pay":
-                //    window.location.href = '/balance'
-                //    break
+                case 'Forecast':
+                    measure.classList.remove("selected-btn");
+                    forecast.classList.add("selected-btn");
+                    break
+                case 'Measure':
+                    window.location.href = '/'
+                    break
                 case "ML":
                     window.location.href = '/'
                     break
-                case "Adm":
+                case 'Admin':
                     window.location.href = '/admin'
                     break
                 default:
@@ -58,23 +67,5 @@
             }
         });
     });
-    function balanceUpdate()
-    {
-        const balance = document.getElementById('user_balance');
-        fetch("/users/balance", {method: "GET"})
-        .then(response => 
-        {
-            if (!response.ok) throw new Error('Ошибка сети');
-            return response.json();
-        })
-        .then(json => 
-        {
-            if(Object.keys(json).includes('value'))
-            {
-                balance.innerHTML = json['value']
-            }
-        })
-        .catch(error => console.error('Ошибка:', error));
 
-    };
 </script>
