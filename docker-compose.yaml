@@ -23,13 +23,14 @@ services:
     networks:
       - ml_service_network
   web-proxy:
-    image: nginx:latest
+#    image: nginx:latest
     container_name: diplo-service-nginx
     restart: unless-stopped
     build:
+      context: .
       dockerfile: ./nginx/Dockerfile
     ports:
-      - 80:80
+      - "80:80"
     networks:
       - ml_service_network
 volumes:
