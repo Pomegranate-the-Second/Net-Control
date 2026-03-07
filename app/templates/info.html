@@ -1,9 +1,132 @@
 {% include "base.html" %}
 {% include "panel.html" %}
 
-    <!-- Основной контейнер с двумя панелями -->
-    <div class="main-container">
-        <h1>Дипломная работа на тему: «Приложения с графическим интерфейсом для мониторинга сетевых соединений на языке Java»</h1>
+<main class="container mx-auto py-8 px-4">
+    <!-- Основной контекст: две колонки, правая 20% ширины, левая 80% -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <!-- Левая часть (80% ширины) - текст пояснительной записки -->
+        <div class="lg:col-span-4">
+            <div class="word-processor-body">
+                <div class="page-break-sim">
+                    <div class="flex justify-center items-center">
+                        <img src='files/sfedu_logo.png'>
+                    </div>
+                </div>
+                <!-- Здесь начинается разбивка на листы (имитация) -->
+                <div class="page-break-sim">
+                    <h1 class="text-2xl font-bold text-center mb-6">ПОЯСНИТЕЛЬНАЯ ЗАПИСКА</h1>
+                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Продолжение текста. Здесь может быть введение или любой раздел. Далее пример рисунка с подписью и сквозной нумерацией.</p>
+                </div>
+
+                <div class="page-break-sim">
+                    <h2 class="text-xl font-semibold mb-3">Пример вставки изображения</h2>
+                    <div class="bg-gray-100 p-4 flex justify-center">
+                        <!-- Имитация рисунка -->
+                        <div class="w-64 h-40 bg-blue-200 flex items-center justify-center border border-gray-400 text-gray-700">
+                            [Схема архитектуры]
+                        </div>
+                    </div>
+                    <!-- Подпись рисунка со сквозной нумерацией -->
+                    <p class="caption-fig">Диаграмма компонентов системы</p>
+                    <p class="mt-3">После рисунка идёт поясняющий текст. Убедитесь, что все иллюстрации имеют сквозную нумерацию: следующий рисунок автоматически получит номер 2.</p>
+
+                    <!-- Ещё один рисунок для демонстрации нумерации -->
+                    <div class="bg-gray-100 p-4 flex justify-center mt-6">
+                        <div class="w-64 h-40 bg-green-200 flex items-center justify-center border border-gray-400 text-gray-700">
+                            [UML диаграмма классов]
+                        </div>
+                    </div>
+                    <p class="caption-fig">Диаграмма классов программной системы</p>
+                </div>
+
+                <div class="page-break-sim">
+                    <h2 class="text-xl font-semibold mb-3">Таблицы со сквозной нумерацией</h2>
+                    <p>Пример таблицы, оформленной в соответствии с требованиями:</p>
+                    <table class="min-w-full border-collapse border border-gray-300 mt-3">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 px-4 py-2">№</th>
+                                <th class="border border-gray-300 px-4 py-2">Показатель</th>
+                                <th class="border border-gray-300 px-4 py-2">Значение</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2">1</td>
+                                <td class="border border-gray-300 px-4 py-2">Производительность</td>
+                                <td class="border border-gray-300 px-4 py-2">120 оп/с</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-4 py-2">2</td>
+                                <td class="border border-gray-300 px-4 py-2">Надёжность</td>
+                                <td class="border border-gray-300 px-4 py-2">99.9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="caption-table">Сравнительные характеристики</p>
+
+                    <p class="mt-6">Вторая таблица для проверки нумерации:</p>
+                    <table class="min-w-full border-collapse border border-gray-300 mt-2">
+                        <thead>
+                            <tr class="bg-gray-100"><th class="border px-4 py-2">Параметр</th><th class="border px-4 py-2">Значение</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="border px-4 py-2">Объём памяти</td><td class="border px-4 py-2">16 GB</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="caption-table">Технические характеристики сервера</p>
+                </div>
+
+                <div class="page-break-sim">
+                    <h2 class="text-xl font-semibold mb-3">Список литературы и электронных источников</h2>
+                    <p class="font-semibold">Литература:</p>
+                    <ol class="list-decimal list-inside mb-4">
+                        <li>Иванов И.И. "Проектирование информационных систем". Москва, 2021. 250 с.</li>
+                        <li>Петров П.А. "Базы данных: от проектирования до реализации". СПб, 2020. 310 с.</li>
+                        <li>Сидоров В.В. "Современные веб-технологии". Екатеринбург, 2022. 180 с.</li>
+                    </ol>
+                    <p class="font-semibold">Электронные источники:</p>
+                    <ol class="list-decimal list-inside">
+                        <li>Официальная документация Python [Электронный ресурс]. – Режим доступа: <a href="#" class="text-blue-600 underline">https://docs.python.org</a> (дата обращения: 20.05.2025).</li>
+                        <li>ГОСТ 7.32-2017. Система стандартов по информации ... [Электронный ресурс] // Кодекс. – Режим доступа: <a href="#" class="text-blue-600 underline">https://docs.cntd.ru</a> (дата обращения: 01.06.2025).</li>
+                        <li>Tailwind CSS документация [Электронный ресурс]. – Режим доступа: <a href="#" class="text-blue-600 underline">https://tailwindcss.com/docs</a> (дата обращения: 02.06.2025).</li>
+                    </ol>
+                </div>
+
+                <div class="page-break-sim">
+                    <p><em>Примечание: для удобства вёрстки каждый тематический блок выделен как отдельный «лист». При печати через браузер поля будут применены согласно ГОСТ-подобным требованиям (левое 2.5-3 мм, правое 1.5 мм, верх/низ 20 мм) за счёт @media print.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая часть (20% ширины) - оглавление (панель навигации) -->
+        <div class="lg:col-span-1">
+            <div class="toc-panel">
+                <h3 class="font-bold text-lg mb-3 border-b pb-2">Оглавление</h3>
+                <ul>
+                    <li><a href="#" onclick="window.print(); return false;">🖨️ Печать</a></li>  <!-- пункт печати вызывает стандартный диалог печати -->
+                    <li><a href="#">Титульный лист</a></li>
+                    <li><a href="#">Техническое задание на ВКР</a></li>
+                    <li><a href="#">Аннотация (рус.)</a></li>
+                    <li><a href="#">Аннотация (англ.)</a></li>
+                    <li><a href="#">Содержание</a></li>
+                    <li><a href="#">Введение</a></li>
+                    <li><a href="#">Описание и анализ предметной области</a></li>
+                    <li><a href="#">Постановка задачи и пути её решения</a></li>
+                    <li><a href="#">Проектирование (информационной системы/программы/приложения)</a></li>
+                    <li><a href="#">Реализация (информационной системы/программы/приложения)</a></li>
+                    <li><a href="#">Технико-экономическое обоснование разработки</a></li>
+                    <li><a href="#">Безопасность и экологичность разработки</a></li>
+                    <li><a href="#">Заключение</a></li>
+                    <li><a href="#">Библиографический список</a></li>
+                    <li><a href="#">Приложения</a></li>
+                    <li class="mt-2 pt-2 border-t border-gray-300"><a href="#" onclick="window.print(); return false;" class="font-semibold text-blue-700">🖨️ Печать</a></li>
+                </ul>
+                <p class="text-xs text-gray-500 mt-4">* При выборе "Печать" будут использованы поля: верх/низ 20мм, левое ~2.8мм, правое 1.5мм (стили @media print).</p>
+            </div>
+        </div>
     </div>
+</main>
 
 {% include "foot.html" %}

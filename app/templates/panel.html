@@ -23,12 +23,24 @@
         </nav>
     </div>
 </header>
+<hidden>
+    {{mode}}
+</hidden>
 <script>
     console.log(window.location.href)
     const forecast = document.getElementById("idForecast")
     const measure = document.getElementById("idMeasure")
-    measure.classList.add("selected-btn")
-    console.log(measure.class)
+    
+    var selector =  {% if mode is defined %} "{{mode}}" {%else%} undefined {% endif %}
+    
+    if (selector) {
+        if (selector == "measure") {
+            if (measure) measure.classList.add("selected-btn")
+        }
+        else if (selector == "forecast") {
+            if (forecast) forecast.classList.add("selected-btn")
+        }
+    }
     const formDataToJson = (formData) => JSON.stringify(Object.fromEntries(formData));
     // Анимация кнопок навигации
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -50,11 +62,25 @@
                     window.location.href = '/info'
                     break
                 case 'Forecast':
-                    measure.classList.remove("selected-btn");
-                    forecast.classList.add("selected-btn");
+                    if (!selector) {
+
+                        window.location.href = '/forecasts'
+                    }
+                    else {
+                        measure.classList.remove("selected-btn");
+                        forecast.classList.add("selected-btn");
+                        selector = "forecast";
+                    }
                     break
                 case 'Measure':
-                    window.location.href = '/'
+                    if (!selector) {
+                        window.location.href = '/measurements';
+                    }
+                    else {
+                        forecast.classList.remove("selected-btn");
+                        measure.classList.add("selected-btn");
+                        selector = "measure";
+                    }
                     break
                 case "ML":
                     window.location.href = '/'

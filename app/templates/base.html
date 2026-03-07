@@ -375,6 +375,161 @@
         .selected-btn {
             border: 1px solid navy;
         }
+        /*Отсюда начинается оформление пояснительной записки*/
+        /* Основные стили для текста пояснительной записки (левая часть) */
+        .word-processor-body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14pt;        /* размер шрифта 14 */
+            line-height: 1.5;        /* полуторный междустрочный интервал */
+            text-align: justify;      /* выравнивание по ширине */
+            background-color: #ffffff;
+            color: #000000;
+            max-width: 100%;
+            margin: 0 auto;
+            /* Имитация листов: легкая тень и отступы как в Word */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 2rem 2.5rem;    /* внутренние поля, чтобы текст не прилипал к краям "листа" */
+            border-radius: 2px;
+        }
+        /* Дополнительно: имитация разрыва страницы (листа) */
+        .page-break-sim {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px dashed #d1d5db; /* серый пунктир — граница между листами */
+            position: relative;
+        }
+        .page-break-sim:first-of-type {
+            border-top: none;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        /* Стили для подписей рисунков и таблиц */
+        .caption-fig,
+        .caption-table {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 13pt;
+            font-style: italic;
+            text-align: center;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        .caption-fig::before {
+            content: "Рисунок ";
+            font-weight: 600;
+            font-style: normal;
+        }
+        .caption-table::before {
+            content: "Таблица ";
+            font-weight: 600;
+            font-style: normal;
+        }
+        /* сквозная нумерация делается через счётчики */
+        body {
+            counter-reset: figure-counter 0 table-counter 0;
+        }
+        .fig-counter {
+            counter-increment: figure-counter;
+        }
+        .fig-counter::before {
+            content: counter(figure-counter) " – ";
+            font-weight: 600;
+            font-style: normal;
+        }
+        .table-counter {
+            counter-increment: table-counter;
+        }
+        .table-counter::before {
+            content: counter(table-counter) " – ";
+            font-weight: 600;
+            font-style: normal;
+        }
+        /* сама подпись рисунка: убираем стандартный before, оставляем только номер через счётчик */
+        .caption-fig {
+            counter-increment: figure-counter;
+        }
+        .caption-fig::before {
+            content: "Рисунок " counter(figure-counter) " – ";
+        }
+        .caption-table {
+            counter-increment: table-counter;
+        }
+        .caption-table::before {
+            content: "Таблица " counter(table-counter) " – ";
+        }
+        /* Оглавление (правая панель) стилизуем как навигацию */
+        .toc-panel {
+            background-color: #f9fafb;
+            border-left: 1px solid #e5e7eb;
+            height: fit-content;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 1rem;
+            padding: 1.25rem 0.75rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .toc-panel ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc-panel li {
+            margin-bottom: 0.4rem;
+        }
+        .toc-panel a {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.95rem;
+            color: #1f2937;
+            text-decoration: none;
+            display: block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: background 0.1s;
+            border-left: 2px solid transparent;
+        }
+        .toc-panel a:hover {
+            background-color: #e6f0ff;
+            border-left-color: #3b82f6;
+        }
+        /* Для печати используются специальные стили */
+        @media print {
+            /* скрываем навигацию и шапки/подвалы, задаем поля */
+            body {
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+            .toc-panel, header, footer, .container > .grid > div:last-child {
+                display: none !important;
+            }
+            .container > .grid > div:first-child {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: 0 0 100% !important;
+            }
+            .word-processor-body {
+                box-shadow: none;
+                padding: 0;
+                margin: 0 auto;
+                /* поля: верхнее/нижнее 20мм, левое 2.5-3мм, правое 1.5мм */
+                padding-top: 20mm !important;
+                padding-bottom: 20mm !important;
+                padding-left: 2.8mm !important;  /* среднее между 2.5 и 3 мм */
+                padding-right: 1.5mm !important;
+                max-width: 100%;
+            }
+            .page-break-sim {
+                border-top: none; /* убираем пунктир при печати */
+                page-break-after: always; /* каждый блок с классом page-break-sim начинает новую страницу, если нужно */
+            }
+            /* убираем dashed линии */
+            .page-break-sim {
+                border-top: none;
+            }
+        }
+        /*Здесь заканчивается оформление пояснительной записки*/
     </style>
     <script>
     function showNotification(type, message) {
