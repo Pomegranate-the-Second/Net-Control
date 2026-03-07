@@ -22,6 +22,7 @@ class Base(DeclarativeBase):
     __abstract__ = True
 
 int_pk = Annotated[int, mapped_column(primary_key=True)]
+float_with_null = Annotated[float, mapped_column(nullable=True)]
 float_zero = Annotated[float, mapped_column(server_default=text('0.0'), nullable=False)]
 float_one = Annotated[float, mapped_column(server_default=text('1.0'), nullable=False)]
 bool_val =  Annotated[bool, mapped_column(default=False, server_default=text('false'), nullable=False)]

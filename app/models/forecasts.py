@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
-from database.database import Base, int_pk, float_zero, created_at
+from database.database import Base, int_pk, float_zero, float_with_null, created_at
 
 
 class Forecasts(Base):
@@ -10,11 +10,10 @@ class Forecasts(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     lat: Mapped[float_zero]
     lon: Mapped[float_zero]
-    bs_num: Mapped[str]
-    cell_num: Mapped[str]
-    operator: Mapped[str]
-    upload: Mapped[float_zero]
-    download: Mapped[float_zero]
+    operator: Mapped[str] ## Mobile Network Code (MNC)
+    upload: Mapped[float_with_null] 
+    download: Mapped[float_with_null]
+    status: Mapped[str] = mapped_column(default="pending")
     event_datetime: Mapped[created_at]
 
     extend_existing = True
