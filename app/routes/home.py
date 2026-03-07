@@ -14,25 +14,48 @@ templates = Jinja2Templates(directory='templates')
 settings = get_settings()
 
 
-@router.get("/", summary='Страница приглашения в сервис!')
-def home_page(request: Request):
+def create_page(request: Request, mode = "unknown"):
     token = request.cookies.get(settings.COOKIE_NAME)
     if token:
         try:
-            user = AuthService.get_user_from_token(token)
-            panel = {'Предсказания скорости': ['Forecast', 'fa-circle-nodes'],
-                     'Измерения': ['Measure', 'fa-chart-line'],
-                     'Админ панель': ['Admin', 'fa-tasks'],
+            panel = {'Предсказания скорости': ['Forecast', 'fa-eye'],
+                     'Измерения': ['Measure', 'fa-signal'],
+                     'Админ панель': ['Admin', 'fa-user-shield'],
                      'Документация к проекту': ['Doc', 'fa-file-alt'],
                      'Выход': ['Out', 'fa-sign-out-alt']
                     }
             return templates.TemplateResponse(name='index.html',
                                             context={'request': request,
+                                                     'mode': mode,
                                                      'panel': panel}
                                             )
         except HTTPException:
-            user = None
+            raise 
     
+    raise HTTPException(status_code=404, detail="User not found")
+
+@router.get("/", summary='Страница приглашения в сервис!')
+def home_page(request: Request):
+    try:
+        return create_page(request, "measure")
+    except HTTPException:
+        None
+    return RedirectResponse("/login")
+
+@router.get("/measurements", summary='Страница измерений!')
+def measurement_page(request: Request):
+    try:
+        return create_page(request, "measure")
+    except HTTPException:
+        None
+    return RedirectResponse("/login")
+
+@router.get("/forecasts", summary='Страница прогнозирования!')
+def forecast_page(request: Request):
+    try:
+        return create_page(request, "forecast")
+    except HTTPException:
+        None
     return RedirectResponse("/login")
 
 
@@ -58,9 +81,9 @@ def diplom(response: Response, request: Request):
     token = request.cookies.get(settings.COOKIE_NAME)
     if token:
         try:
-            panel = {'Предсказания скорости': ['Forecast', 'fa-circle-nodes'],
-                     'Измерения': ['Measure', 'fa-chart-line'],
-                     'Админ панель': ['Admin', 'fa-tasks'],
+            panel = {'Предсказания скорости': ['Forecast', 'fa-eye'],
+                     'Измерения': ['Measure', 'fa-signal'],
+                     'Админ панель': ['Admin', 'fa-user-shield'],
                      'Выход': ['Out', 'fa-sign-out-alt']
                     }
             return templates.TemplateResponse(name='info.html',
