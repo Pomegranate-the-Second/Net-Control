@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from routes.home import router as home_router
 from routes.auth import router as auth_router
 from routes.measurement import router as measure_router
@@ -46,6 +47,8 @@ def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+app.mount("/files", StaticFiles(directory="files"), name="static")
 
 #app.include_router(health_router)
 app.include_router(home_router)
