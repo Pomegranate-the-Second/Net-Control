@@ -7,7 +7,7 @@ from routes.forecast import router as forecast_router
 #from routes.user import router as user_router
 #from routes.ml import router as ml_router
 #from routes.admin import router as admin_router
-#from routes.health import router as health_router
+from routes.health import router as health_router
 from database.database import init_db
 from services.crud.usercrud import UsersCRUD
 from services.crud.devicecrud import DevicesCRUD
@@ -51,7 +51,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.mount("/files", StaticFiles(directory="files"), name="static")
 
-#app.include_router(health_router)
+app.include_router(health_router)
 app.include_router(home_router)
 app.include_router(auth_router)
 app.include_router(measure_router)
