@@ -2,6 +2,8 @@ import os, pandas as pd, numpy as np, joblib, xgboost as xgb, pika, logging, jso
 from datetime import timedelta
 import httpx
 from io import StringIO
+import time
+import random
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -31,6 +33,20 @@ def callback(ch, method, properties, body, *args, **kwargs):
     payload = json.loads(body)
     #file_name = payload['image']
     #image = base64.b64decode(payload['bytes'])
+    data = {'id': payload['id'],
+            'upload': random.randint(1, 30),
+            'download': random.randint(1, 30), 
+            'state': "ready"
+            }
+    
+    r = httpx.patch('http://app:8000/forecast/complete', 
+                   data=json.dumps(data), 
+                   headers={"Content-Type": "application/json"},)
+    if 199<r.status_code<300:
+        logger.info(f'Успешно: "{r.json()}"')
+    else:
+        logger.info(f'С ошибкой: "{r.json()}"')
+    time.sleep(20)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 channel.basic_consume(queue_name, 

@@ -16,18 +16,21 @@ class ForecastsCRUD:
             session.add(new_instance)
             try:
                 session.commit()
+                session.refresh(new_instance)
             except SQLAlchemyError as e:
                 session.rollback()
                 raise e
         return new_instance
     
     @classmethod
-    def update_forecast_by_id(cls, id: BaseModel, new_status: BaseModel):
+    def update_forecast_by_id(cls, id: BaseModel, new_upload: BaseModel, new_download: BaseModel, new_status: BaseModel):
         with session_maker() as session:
             try:
                 query = select(cls.model).filter_by(id=id)
                 result = session.execute(query)
                 record = result.scalar_one_or_none()
+                record.upload = new_upload
+                record.download = new_download
                 record.status = new_status
                 session.commit()
                 session.refresh(record)

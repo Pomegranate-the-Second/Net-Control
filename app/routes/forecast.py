@@ -6,7 +6,9 @@ from services.auth.auth import AuthService
 from services.crud.forecastcrud import ForecastsCRUD
 from services.crud.devicecrud import DevicesCRUD
 from schemas.user import SUserInfo
-from schemas.forecast import SForecast, SForecastAdd, SRectangle
+from schemas.forecast import SForecast, SForecastAdd, SRectangle, SComplete
+from services.rm.rm import RabbitMQSender
+import json
 
 router = APIRouter(prefix='/forecast', tags=['Функции для прогнозирования'])
 
@@ -19,11 +21,18 @@ def addForecast(forecast: SForecast, user: SUserInfo = Depends(AuthService.get_c
                          )
     result = {"message": "success"}
     try:
-        ForecastsCRUD.add(item)
+        new_item = ForecastsCRUD.add(item)
+
     except SQLAlchemyError:
         result = {"message": "failure"}
 
-    
+    th_item = {'id': new_item.id,
+            'lat': new_item.lat,
+            'lon': new_item.lon,
+            'operator': new_item.operator
+            }
+    with RabbitMQSender("ml_task_queue") as sender:
+        sender.send_task(json.dumps(th_item))
     return result
 
 @router.post('/view', summary='Вернуть список указанных точек по координатам углов пряямоугольника')
@@ -40,4 +49,17 @@ def viewForecast(data: SRectangle, user: SUserInfo = Depends(AuthService.get_cur
                "event_datetime": itm.event_datetime
                } for itm in items]
     
+    return result
+
+@router.patch('/complete', summary='Обновить данные предсказания в таблице', include_in_schema=False)
+def completeForecast(item: SComplete) -> dict:
+    result = {"message": "success"}
+    try:
+        ForecastsCRUD.update_forecast_by_id(item.id,
+                                            item.upload,
+                                            item.download,
+                                            item.state)
+    except SQLAlchemyError:
+        result = {"message": "failure"}
+
     return result
