@@ -12,9 +12,11 @@ from database.database import init_db
 from services.crud.usercrud import UsersCRUD
 from services.crud.devicecrud import DevicesCRUD
 from services.crud.measurementcrud import MeasurementsCRUD
+from services.crud.forecastcrud import ForecastsCRUD
 from schemas.user import SUser, SUserEmail
 from schemas.device import SDeviceAdd
 from schemas.measurement import SMeasurementAdd
+from schemas.forecast import SForecastAddPlus
 from services.auth.auth import AuthService
 from models.user import User
 from models.devices import Devices
@@ -41,10 +43,18 @@ def lifespan(app: FastAPI):
         [121, 47.252374, 38.906111, 615806, 2, "02", 43, 11, -116, -103],
         [121, 47.252973, 38.911321, 615806, 2, "02", 44, 42, -127, -109],
     ]
-    keys = ["device_id", "lat", "lon", "bs_num", "cell_num", "operator", "upload", "download", "rsrp", "rssi"]
+    keys_m = ["device_id", "lat", "lon", "bs_num", "cell_num", "operator", "upload", "download", "rsrp", "rssi"]
+    ftlist = [
+        [1, 47.209484, 38.930618, "2", 10.0, 11.0, "ready"],
+        [1, 47.201410, 38.936239, "2", 43.0, 55.0, "ready"],
+    ]
+    keys_f = ["user_id", "lat", "lon", "operator", "upload", "download", "status"]
     for itm in mlist:
-        measurement = SMeasurementAdd(**dict(zip(keys, itm)))
+        measurement = SMeasurementAdd(**dict(zip(keys_m, itm)))
         MeasurementsCRUD.add(measurement)
+    for itm in ftlist:
+        forecast = SForecastAddPlus(**dict(zip(keys_f, itm)))
+        ForecastsCRUD.add(forecast)
     yield
 
 app = FastAPI(lifespan=lifespan)
