@@ -63,3 +63,63 @@ class UsersCRUD:
                 session.rollback()
                 raise e
         return new_instance
+    
+    @classmethod
+    def allow_admin_by_id(cls, id: BaseModel):
+        with session_maker() as session:
+            try:
+                query = select(cls.model).filter_by(id=id)
+                result = session.execute(query)
+                record = result.scalar_one_or_none()
+                if record is not None:
+                    record.is_admin = True
+                session.commit()
+                session.refresh(record)
+                return record
+            except SQLAlchemyError as e:
+                raise
+    
+    @classmethod
+    def disallow_admin_by_id(cls, id: BaseModel):
+        with session_maker() as session:
+            try:
+                query = select(cls.model).filter_by(id=id)
+                result = session.execute(query)
+                record = result.scalar_one_or_none()
+                if record is not None:
+                    record.is_admin = False
+                session.commit()
+                session.refresh(record)
+                return record
+            except SQLAlchemyError as e:
+                raise
+            
+    @classmethod
+    def allow_access_by_id(cls, id: BaseModel):
+        with session_maker() as session:
+            try:
+                query = select(cls.model).filter_by(id=id)
+                result = session.execute(query)
+                record = result.scalar_one_or_none()
+                if record is not None:
+                    record.is_access = True
+                session.commit()
+                session.refresh(record)
+                return record
+            except SQLAlchemyError as e:
+                raise
+    
+    @classmethod
+    def disallow_access_by_id(cls, id: BaseModel):
+        with session_maker() as session:
+            try:
+                query = select(cls.model).filter_by(id=id)
+                result = session.execute(query)
+                record = result.scalar_one_or_none()
+                if record is not None:
+                    record.is_access = False
+                session.commit()
+                session.refresh(record)
+                return record
+            except SQLAlchemyError as e:
+                raise

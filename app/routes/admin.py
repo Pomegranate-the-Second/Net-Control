@@ -17,8 +17,6 @@ def get_users(admin_data: SUserInfo = Depends(AuthService.get_current_admin_user
                       'email': user.email,
                       'first_name': user.first_name,
                       'last_name': user.last_name,
-                      'balance': user.balance,
-                      'loyalty': user.loyalty,
                       'is_admin': user.is_admin})
     return result
 
@@ -80,7 +78,6 @@ def create_users(user_data: SUserRegister,
     return {'detail': f'Новый пользователь зарегистрирован!',
             'id': user.id, 
             'email': user.email,
-            'balance': user.balance,
             'admin': user.is_admin}
 
 
@@ -104,6 +101,27 @@ def change_disallow_admin_by_id(id: SAdminID,
                             detail='Пользователь не найден')
     UsersCRUD.disallow_admin_by_id(id.id)
     return {'message': 'success', 'detail': 'Права администратора отозваны'}
+
+@router.put('/user/access/id', summary='Предоставить доступ по id')
+def change_allow_access_by_id(id: SAdminID,
+                             admin_data: SUserInfo = Depends(AuthService.get_current_admin_user)) -> dict:
+    user = UsersCRUD.find_one_or_none_by_id(id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail='Пользователь не найден')
+    UsersCRUD.allow_access_by_id(id.id)
+    return {'message': 'success', 'detail': 'Права доступа предоставлены'}
+
+
+@router.delete('/user/access/id', summary='Запретить доступ по id')
+def change_disallow_access_by_id(id: SAdminID,
+                                admin_data: SUserInfo = Depends(AuthService.get_current_admin_user)) -> dict:
+    user = UsersCRUD.find_one_or_none_by_id(id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail='Пользователь не найден')
+    UsersCRUD.disallow_access_by_id(id.id)
+    return {'message': 'success', 'detail': 'Права доступа отозваны'}
 
 
 @router.put('/user/admin/email', summary='Предоставить права администратора по email')

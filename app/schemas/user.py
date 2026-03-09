@@ -4,6 +4,14 @@ import re
 class SUserAuth(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=3, max_length=50, description="Пароль, от 3 до 50 знаков")
+    
+class SUserAdmin(BaseModel):
+    first_name: str = Field(..., min_length=3, max_length=50, description="Имя, от 3 до 50 символов")
+    last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
+    email: EmailStr
+    password: str = Field(..., min_length=3, max_length=150, description="Пароль, от 3 до 50 знаков")
+    is_access: bool = Field(...)
+    is_admin: bool = Field(...)
 
 class SUserRegister(BaseModel):
     first_name: str = Field(..., min_length=3, max_length=50, description="Имя, от 3 до 50 символов")
@@ -16,6 +24,7 @@ class SUser(BaseModel):
     last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
     email: EmailStr
     password: str = Field(..., min_length=3, max_length=150, description="Пароль, от 3 до 150 знаков")
+    is_access: bool = Field(...)
 
 
 class SUserInfo(BaseModel):

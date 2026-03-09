@@ -13,17 +13,24 @@ templates = Jinja2Templates(directory='templates')
 
 settings = get_settings()
 
+def get_panel(token, additional):
+    user = AuthService.get_user_from_token(token)
+    panel = {}
+    if user.is_access:
+        panel['Предсказания скорости'] = ['Forecast', 'fa-eye']
+        panel['Измерения'] = ['Measure', 'fa-signal']
+        if user.is_admin:
+            panel['Админ панель'] = ['Admin', 'fa-user-shield']
+        panel.update(additional)
+    panel['Документация к проекту'] = ['Doc', 'fa-file-alt']
+    panel['Выход'] = ['Out', 'fa-sign-out-alt']
+    return panel
 
 def create_page(request: Request, mode = "unknown"):
     token = request.cookies.get(settings.COOKIE_NAME)
     if token:
         try:
-            panel = {'Предсказания скорости': ['Forecast', 'fa-eye'],
-                     'Измерения': ['Measure', 'fa-signal'],
-                     'Админ панель': ['Admin', 'fa-user-shield'],
-                     'Документация к проекту': ['Doc', 'fa-file-alt'],
-                     'Выход': ['Out', 'fa-sign-out-alt']
-                    }
+            panel = get_panel(token, {})
             return templates.TemplateResponse(name='index.html',
                                             context={'request': request,
                                                      'mode': mode,
@@ -59,10 +66,26 @@ def forecast_page(request: Request):
     return RedirectResponse("/login")
 
 
-@router.get("/registration", summary='Регистрация личного кабинета!')
-def registration(request: Request):
-    panel = {'Вход': ['In', 'fa-sign-in-alt']}
-    return templates.TemplateResponse(name='registration.html', context={'request': request, 'panel': panel})
+@router.get("/admin", summary='Кабинет админа')
+def adminpanel(request: Request):
+    token = request.cookies.get(settings.COOKIE_NAME)
+    if token: 
+        try:
+            user = AuthService.get_user_from_token(token)
+            if not user.is_admin:
+                return RedirectResponse("/")
+            panel = get_panel(token, {})
+            table = list()
+            for user_item in UsersCRUD.find_all_users():
+                table.append({'id': user_item.id,
+                               'email': user_item.email,
+                               'admin': user_item.is_admin,
+                               'access': user_item.is_access})
+            return templates.TemplateResponse(name='admin.html', context={'request': request,'panel': panel, 'table': table})
+        except HTTPException:
+            raise 
+   
+    raise HTTPException(status_code=404, detail="User not found")
 
 
 @router.get("/login", summary='Вход в личный кабинет!')
@@ -81,11 +104,7 @@ def diplom(response: Response, request: Request):
     token = request.cookies.get(settings.COOKIE_NAME)
     if token:
         try:
-            panel = {'Предсказания скорости': ['Forecast', 'fa-eye'],
-                     'Измерения': ['Measure', 'fa-signal'],
-                     'Админ панель': ['Admin', 'fa-user-shield'],
-                     'Выход': ['Out', 'fa-sign-out-alt']
-                    }
+            panel = get_panel(token, {})
             return templates.TemplateResponse(name='info.html',
                                             context={'request': request,
                                                      'panel': panel}
