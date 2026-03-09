@@ -9,6 +9,15 @@ class SForecastAdd(BaseModel):
     lon: float = Field(..., example=38.9034, description="Восточная долгота")
     operator: str = Field(..., example="2", max_length=10, description="Номер оператора")
     
+class SForecastAddPlus(BaseModel):
+    user_id: int = Field(...)
+    lat: float = Field(..., example=47.2333, description="Северная широта")
+    lon: float = Field(..., example=38.9034, description="Восточная долгота")
+    operator: str = Field(..., example="2", max_length=10, description="Номер оператора")
+    upload: float = Field(..., example=23.0, description="Скорость загрузки")
+    download: float = Field(..., example=22.0, description="Скорость скачивания")
+    status: str = Field(..., example="pending", max_length=50, description="Статус процесса")
+    
 class SForecast(BaseModel):
     """ Схема для валидации данных при добавлении прогнозируемой точки """
     lat: float = Field(..., example=47.2333, description="Северная широта")
@@ -20,7 +29,7 @@ class SComplete(BaseModel):
     id:  int = Field(...)
     upload: float = Field(..., example=23.0, description="Скорость загрузки")
     download: float = Field(..., example=22.0, description="Скорость скачивания")
-    state: str = Field(..., example="pending", max_length=50, description="Статус процесса")
+    status: str = Field(..., example="pending", max_length=50, description="Статус процесса")
     
     
 class SRectangle(BaseModel):

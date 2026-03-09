@@ -15,9 +15,9 @@
         <div class="right-panel">
             <div class="map-container">
                 <div id="map"></div>
-                <!--<div class="map-controls">-->
-                    <!--<button id="clear-points">Очистить все точки</button>-->
-                <!--</div>-->
+                <div class="map-controls">
+                    <button id="clear-points"><i class="fa-solid fa-rotate"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -51,7 +51,41 @@
             
             if (existingElement) {
                 // Если элемент уже существует, обновляем его и делаем активным
-                existingElement.innerHTML = `
+                if (selector == "forecast") {
+                    existingElement.innerHTML = `
+                    <h3>Точка пргноза №${point.id}</h3>
+                    <div class="data-item">
+                        <span class="data-label">Широта:</span>
+                        <span class="data-value">${point.lat.toFixed(6)}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Долгота:</span>
+                        <span class="data-value">${point.lon.toFixed(6)}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Оператор:</span>
+                        <span class="data-value">${getOperator(point.operator)}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Скорость скачивания:</span>
+                        <span class="data-value">${point.download || 'Не определен'} Мбит/сек</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Скорость загрузки:</span>
+                        <span class="data-value">${point.upload || 'Не определен'} Мбит/сек</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Статус точки:</span>
+                        <span class="data-value">${point.status || 'pending'}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Дата измерения:</span>
+                        <span class="data-value">${point.event_datetime || 'Не указана'}</span>
+                    </div>
+                    `;
+                }
+                else {
+                    existingElement.innerHTML = `
                     <h3>Точка измерений №${point.id}</h3>
                     <div class="data-item">
                         <span class="data-label">Широта:</span>
@@ -93,7 +127,8 @@
                         <span class="data-label">Дата измерения:</span>
                         <span class="data-value">${point.event_datetime || 'Не указана'}</span>
                     </div>
-                `;
+                    `;
+                }
                 existingElement.classList.add('active');
                 existingElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
@@ -285,7 +320,13 @@
         async function updateMapPoints() {
             try {
                 const viewportData = getViewportCoordinates();
-                const response = await fetch('/measure/view', {
+                let url = '/measure/view';
+                if (selector) {
+                    if (selector == "forecast") {
+                        url = '/forecast/view';
+                    }
+                }
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -420,12 +461,28 @@
                 showPointData(point);
             });
             
-            /*
+            
             // Обработчик клика по карте для добавления новых точек
             map.on('click', async function(e) {
-                currentPointId++;
-                const address = await getAddressFromCoordinates(e.latlng.lat, e.latlng.lng);
-                
+                if (!selector) return;
+                if (selector != "forecast") return;
+                const payload = {"lat": e.latlng.lat, "lon": e.latlng.lng, "operator": "2"}
+                const response = await fetch('/forecast/add', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json()
+
+                if (data["message"] == "success") updateMapPoints();
+
+
+                //currentPointId++;
+                //const address = await getAddressFromCoordinates(e.latlng.lat, e.latlng.lng);
+                /*
                 const newPoint = {
                     id: currentPointId,
                     lat: e.latlng.lat,
@@ -438,13 +495,14 @@
                     address: address
                 };
                 
-                await addPointToMap(newPoint);
-                showPointData(newPoint);
+                //await addPointToMap(newPoint);
+                //showPointData(newPoint);
                 
                 // Центрируем карту на новой точке с увеличением
-                map.setView([newPoint.lat, newPoint.lng], 17);
+                //map.setView([newPoint.lat, newPoint.lng], 17);
+                */
             });
-            */
+            
 
             // Вешаем несколько событий на карту
             map.on('moveend', function(e) {
@@ -457,19 +515,12 @@
                 updateMapPoints();
             });
             
-            /*
+            
             // Кнопка очистки всех точек
             document.getElementById('clear-points').addEventListener('click', function() {
-                if (confirm('Вы уверены, что хотите удалить все точки?')) {
-                    markersLayer.clearLayers();
-                    points = [];
-                    currentPointId = 2;
-                    document.getElementById('point-data-container').innerHTML = '';
-                    document.getElementById('left-panel-title').textContent = 'Данные по точкам (0)';
-                    activePointId = null;
-                }
+                updateMapPoints();
             });
-            */
+            
             
             return { map, markersLayer };
         }
@@ -615,6 +666,8 @@
             `;
             document.head.appendChild(style);
         });
+
+        
     </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 

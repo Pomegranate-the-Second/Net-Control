@@ -58,7 +58,7 @@ def completeForecast(item: SComplete) -> dict:
         ForecastsCRUD.update_forecast_by_id(item.id,
                                             item.upload,
                                             item.download,
-                                            item.state)
+                                            item.status)
     except SQLAlchemyError:
         result = {"message": "failure"}
 

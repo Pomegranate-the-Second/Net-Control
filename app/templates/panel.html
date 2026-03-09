@@ -23,9 +23,6 @@
         </nav>
     </div>
 </header>
-<hidden>
-    {{mode}}
-</hidden>
 <script>
     console.log(window.location.href)
     const forecast = document.getElementById("idForecast")
@@ -70,6 +67,9 @@
                         measure.classList.remove("selected-btn");
                         forecast.classList.add("selected-btn");
                         selector = "forecast";
+                        if (typeof updateMapPoints === "function") {
+                            updateMapPoints();
+                        }
                     }
                     break
                 case 'Measure':
@@ -80,6 +80,9 @@
                         forecast.classList.remove("selected-btn");
                         measure.classList.add("selected-btn");
                         selector = "measure";
+                        if (typeof updateMapPoints === "function") {
+                            updateMapPoints();
+                        }
                     }
                     break
                 case "ML":

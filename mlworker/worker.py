@@ -36,7 +36,7 @@ def callback(ch, method, properties, body, *args, **kwargs):
     data = {'id': payload['id'],
             'upload': random.randint(1, 30),
             'download': random.randint(1, 30), 
-            'state': "ready"
+            'status': "ready"
             }
     
     r = httpx.patch('http://app:8000/forecast/complete', 
