@@ -2,9 +2,11 @@ from fastapi import APIRouter, Request, HTTPException, Response, Depends, Form
 from fastapi.templating import Jinja2Templates
 from database.config import get_settings
 from fastapi.responses import RedirectResponse
+from fastapi.responses import StreamingResponse
 from schemas.user import SUserAuth, SUserRegister, SUser, SUserID, SUserInfo
 from services.crud.usercrud import UsersCRUD
 from services.auth.auth import AuthService
+import os
 
 
 router = APIRouter(tags=['Личный кабинет'])
@@ -115,7 +117,14 @@ def diplom(response: Response, request: Request):
     panel = {'Вход': ['In', 'fa-sign-in-alt']}
     return templates.TemplateResponse(name='info.html', context={'request': request, 'panel': panel})
     
+def generate():
+    chunk = os.urandom(64 * 1024)
+    while True:
+        yield chunk    
 
+@router.get("/temp", summary='Страница измерения скорости')
+def temp():
+    return StreamingResponse(generate(), media_type="application/octet-stream")
 
 @router.get(
     "/image/{file}",

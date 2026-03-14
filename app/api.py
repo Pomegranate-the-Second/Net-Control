@@ -27,13 +27,13 @@ def lifespan(app: FastAPI):
     user = SUser(first_name='User', 
             last_name='Test', 
             email='User@Test.ru', 
-            password=AuthService.get_password_hash('testpwd'),
+            password=AuthService.get_password_hash('testus'),
             is_access=True
             )
     admin = SUserAdmin(first_name='Admin', 
         last_name='Test', 
         email='Admin@Test.ru', 
-        password=AuthService.get_password_hash('testpwd'),
+        password=AuthService.get_password_hash('testadm'),
         is_access=True,
         is_admin=True
         )
