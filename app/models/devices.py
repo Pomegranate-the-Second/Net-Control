@@ -6,7 +6,7 @@ class Devices(Base):
     __tablename__='devices'
     
     id: Mapped[int_pk]
-    imeisv: Mapped[str_uniq]
+    android_id: Mapped[str_uniq]
 
     extend_existing = True
 

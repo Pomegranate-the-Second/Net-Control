@@ -15,6 +15,7 @@ class SMeasurementAdd(BaseModel):
     rssi: int = Field(..., example=-100, description="Мощность принимаемого сигнала")
     
 class SMeasurement(BaseModel):
+    android_id: str = Field(..., example="cb9f7573e1e7ed05", max_length=100, description="Идентификатор устройства")
     lat: float = Field(..., example=47.2333, description="Северная широта")
     lon: float = Field(..., example=38.9034, description="Восточная долгота")
     bs_num: int = Field(..., example=618946, description="Номер базовой станции")

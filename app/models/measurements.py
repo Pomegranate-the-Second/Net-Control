@@ -16,7 +16,7 @@ class Measurements(Base):
     device_id: Mapped[int] = mapped_column(ForeignKey("devices.id"), nullable=False)
     lat: Mapped[float_zero]
     lon: Mapped[float_zero]
-    bs_num: Mapped[int] ## код региона - номер базовой
+    bs_num: Mapped[int] ## номер базовой
     cell_num: Mapped[int] ## номер сектора
     operator: Mapped[str] ## Mobile Network Code (MNC)
     upload: Mapped[float_zero] 

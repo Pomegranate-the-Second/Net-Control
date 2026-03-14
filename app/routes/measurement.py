@@ -7,12 +7,15 @@ from services.crud.measurementcrud import MeasurementsCRUD
 from services.crud.devicecrud import DevicesCRUD
 from schemas.user import SUserInfo
 from schemas.measurement import SMeasurementAdd, SMeasurement, SRectangle, SDevice
+from schemas.device import SDeviceAID
 
 router = APIRouter(prefix='/measure', tags=['Функции для обработки измерений'])
 
 @router.put('/add', summary='Добавить измерение в таблицу measurements')
-def addMeasurement(measurement: SMeasurement,device: SDevice = Depends(AuthService.get_current_device)) -> dict:
-    item = SMeasurementAdd(device_id = device, 
+def addMeasurement(measurement: SMeasurement) -> dict:
+    device = DevicesCRUD.find_one_or_none_by_aid(SDeviceAID(android_id=measurement.android_id)) 
+    if device is None: device = DevicesCRUD.add(SDeviceAID(android_id=measurement.android_id))
+    item = SMeasurementAdd(device_id = device.id, 
                          lat = measurement.lat,
                          lon = measurement.lon,
                          bs_num = measurement.bs_num,

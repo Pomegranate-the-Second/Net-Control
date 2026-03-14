@@ -14,7 +14,7 @@ from services.crud.devicecrud import DevicesCRUD
 from services.crud.measurementcrud import MeasurementsCRUD
 from services.crud.forecastcrud import ForecastsCRUD
 from schemas.user import SUser, SUserEmail, SUserAdmin
-from schemas.device import SDeviceAdd
+from schemas.device import SDeviceAdd, SDeviceAID
 from schemas.measurement import SMeasurementAdd
 from schemas.forecast import SForecastAddPlus
 from services.auth.auth import AuthService
@@ -39,18 +39,18 @@ def lifespan(app: FastAPI):
         )
     if UsersCRUD.find_one_or_none_by_email(SUserEmail(email=user.email)) is None: UsersCRUD.add(user)
     if UsersCRUD.find_one_or_none_by_email(SUserEmail(email=admin.email)) is None: UsersCRUD.add(admin)
-    device = SDeviceAdd(id = 121, imeisv = "121")
+    device = SDeviceAID(android_id = "121")
     if DevicesCRUD.find_one_or_none(device) is None: DevicesCRUD.add(device)
     mlist = [
-        [121, 47.209497, 38.935356, 615806, 2, "02", 33, 33, -102, -103], 
-        [121, 47.206931, 38.943433, 615806, 2, "02", 23, 11, -116, -103],
-        [121, 47.206378, 38.940356, 615806, 2, "02", 36, 98, -130, -104],
-        [121, 47.205000, 38.940400, 615806, 2, "02", 73, 57, -116, -103],
-        [121, 47.205200, 38.940700, 615806, 2, "02", 30, 14, -119, -102],
-        [121, 47.209549, 38.903899, 615806, 2, "02", 53, 85, -106, -103],
-        [121, 47.209233, 38.901014, 615806, 2, "02", 37, 10, -112, -106],
-        [121, 47.252374, 38.906111, 615806, 2, "02", 43, 11, -116, -103],
-        [121, 47.252973, 38.911321, 615806, 2, "02", 44, 42, -127, -109],
+        [1, 47.209497, 38.935356, 615806, 2, "02", 33, 33, -102, -103], 
+        [1, 47.206931, 38.943433, 615806, 2, "02", 23, 11, -116, -103],
+        [1, 47.206378, 38.940356, 615806, 2, "02", 36, 98, -130, -104],
+        [1, 47.205000, 38.940400, 615806, 2, "02", 73, 57, -116, -103],
+        [1, 47.205200, 38.940700, 615806, 2, "02", 30, 14, -119, -102],
+        [1, 47.209549, 38.903899, 615806, 2, "02", 53, 85, -106, -103],
+        [1, 47.209233, 38.901014, 615806, 2, "02", 37, 10, -112, -106],
+        [1, 47.252374, 38.906111, 615806, 2, "02", 43, 11, -116, -103],
+        [1, 47.252973, 38.911321, 615806, 2, "02", 44, 42, -127, -109],
     ]
     keys_m = ["device_id", "lat", "lon", "bs_num", "cell_num", "operator", "upload", "download", "rsrp", "rssi"]
     ftlist = [

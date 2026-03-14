@@ -2,4 +2,7 @@ from pydantic import BaseModel, Field
 
 class SDeviceAdd(BaseModel):
     id: int = Field(...)
-    imeisv: str = Field(..., min_length=3, max_length=50, description="Уникальный идентификатор устройства")
+    android_id: str = Field(..., max_length=100, description="Уникальный идентификатор устройства")
+    
+class SDeviceAID(BaseModel):
+    android_id: str = Field(..., max_length=100, description="Уникальный идентификатор устройства")
