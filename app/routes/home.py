@@ -122,9 +122,18 @@ def generate():
     while True:
         yield chunk    
 
-@router.get("/temp", summary='Страница измерения скорости')
+@router.get("/b0e349b6-aaa3-4341-b7f7-39102f6243a1", summary='Страница измерения скорости')
 def temp():
     return StreamingResponse(generate(), media_type="application/octet-stream")
+
+
+@router.post("/c8686ff0-ae42-4883-9216-b56a1a70d555", summary='Страница измерения скорости')
+async def upload(request: Request):
+
+    async for chunk in request.stream():
+        pass
+
+    return {"status": "ok"}
 
 @router.get(
     "/image/{file}",
