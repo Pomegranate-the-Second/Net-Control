@@ -58,6 +58,13 @@ services:
         condition: service_healthy
     networks:
       - ml_service_network
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    networks:
+      - ml_service_network
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
     container_name: rabbitmq_for_ml
