@@ -23,7 +23,7 @@ from models.devices import Devices
 import uvicorn
 
 def lifespan(app: FastAPI):
-    init_db()
+    #init_db()
     user = SUser(first_name='User', 
             last_name='Test', 
             email='User@Test.ru', 
@@ -60,10 +60,10 @@ def lifespan(app: FastAPI):
     keys_f = ["user_id", "lat", "lon", "operator", "upload", "download", "status"]
     for itm in mlist:
         measurement = SMeasurementAdd(**dict(zip(keys_m, itm)))
-        MeasurementsCRUD.add(measurement)
+        #MeasurementsCRUD.add(measurement)
     for itm in ftlist:
         forecast = SForecastAddPlus(**dict(zip(keys_f, itm)))
-        ForecastsCRUD.add(forecast)
+        #ForecastsCRUD.add(forecast)
     yield
 
 app = FastAPI(lifespan=lifespan)
